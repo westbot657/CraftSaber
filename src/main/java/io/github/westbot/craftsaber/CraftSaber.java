@@ -1,5 +1,6 @@
 package io.github.westbot.craftsaber;
 
+import io.github.westbot.craftsaber.debug.DebugCommands;
 import io.github.westbot.craftsaber.lightsystems.LightController;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
@@ -21,6 +22,9 @@ public class CraftSaber implements ModInitializer {
         ModItems.init();
         ModBlocks.init();
         ModEntities.init();
+
+
+        DebugCommands.init();
 
     }
 }

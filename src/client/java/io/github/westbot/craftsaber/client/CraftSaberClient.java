@@ -62,7 +62,7 @@ public class CraftSaberClient implements ClientModInitializer {
             }
         }
 
-
+        structure_cache.put(id, out);
 
     }
 

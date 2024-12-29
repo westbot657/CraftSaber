@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "craftsaber",
+  "version": "${version}",
+  "name": "CraftSaber",
+  "description": "Make Beat Saber-like lightshows in Minecraft",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/craftsaber/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "io.github.westbot.craftsaber.client.CraftSaberClient"
+    ],
+    "main": [
+      "io.github.westbot.craftsaber.CraftSaber"
+    ]
+  },
+  "mixins": [
+    "craftsaber.mixins.json",
+    {
+      "config": "craftsaber.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

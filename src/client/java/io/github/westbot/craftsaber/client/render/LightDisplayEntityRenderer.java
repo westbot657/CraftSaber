@@ -1,5 +1,6 @@
 package io.github.westbot.craftsaber.client.render;
 
+import io.github.westbot.craftsaber.data.LightTile;
 import io.github.westbot.craftsaber.client.CraftSaberClient;
 import io.github.westbot.craftsaber.entities.LightDisplayEntity;
 import net.minecraft.block.BlockState;
@@ -17,7 +18,6 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LightDisplayEntityRenderer extends EntityRenderer<LightDisplayEntity> {
@@ -49,6 +49,10 @@ public class LightDisplayEntityRenderer extends EntityRenderer<LightDisplayEntit
         for (Pair<Vec3d, BlockState> pair : pairs) {
             Vec3d offset = pair.getLeft();
             BlockState state = pair.getRight();
+
+            if (state.getBlock() instanceof LightTile lightTile) {
+
+            }
 
             offset = offset.rotateZ((float) -rotation.z).rotateY((float) rotation.y).rotateX((float) -rotation.x);
 

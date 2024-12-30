@@ -13,23 +13,39 @@ import net.minecraft.world.World;
 public class LightDisplayEntity extends Entity {
 
     private static final TrackedData<String> STRUCTURE_ID;
-    private String structure_id;
 
     private final static TrackedData<NbtCompound> ROTATION;
-    public Vec3d rotation;
 
     public LightDisplayEntity(EntityType<?> type, World world) {
         super(type, world);
-        structure_id = "";
-        rotation = new Vec3d(0, 0, 0);
+        ignoreCameraFrustum = true;
+
     }
 
     public void setStructureId(String id) {
-        this.structure_id = id;
+        this.dataTracker.set(STRUCTURE_ID, id);
     }
 
     public String getStructureId() {
-        return this.structure_id;
+        return this.dataTracker.get(STRUCTURE_ID);
+    }
+
+    public void setRotation(Vec3d rot) {
+        NbtCompound rotation = new NbtCompound();
+        rotation.putDouble("x", rot.x);
+        rotation.putDouble("y", rot.y);
+        rotation.putDouble("z", rot.z);
+        this.dataTracker.set(ROTATION, rotation);
+    }
+
+    @Override
+    public boolean shouldRender(double distance) {
+        return true;
+    }
+
+    public Vec3d getRotation() {
+        NbtCompound rot = this.dataTracker.get(ROTATION);
+        return new Vec3d(rot.getDouble("x"), rot.getDouble("y"), rot.getDouble("z"));
     }
 
     @Override
@@ -41,29 +57,26 @@ public class LightDisplayEntity extends Entity {
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {
         if (nbt.contains("structure_id", NbtElement.STRING_TYPE)) {
-            this.structure_id = nbt.getString("structure_id");
+            this.dataTracker.set(STRUCTURE_ID, nbt.getString("structure_id"));
         }
 
-        if (nbt.contains("rot", NbtElement.COMPOUND_TYPE)) {
-            NbtCompound rot = nbt.getCompound("rot");
-            this.rotation = new Vec3d(
-                rot.getDouble("x"),
-                rot.getDouble("y"),
-                rot.getDouble("z")
-            );
+        if (nbt.contains("rotation", NbtElement.COMPOUND_TYPE)) {
+            NbtCompound rot = nbt.getCompound("rotation");
+            this.dataTracker.set(ROTATION, rot);
         } else {
-            this.rotation = new Vec3d(0, 0, 0);
+            NbtCompound compound = new NbtCompound();
+            compound.putDouble("x", 0);
+            compound.putDouble("y", 0);
+            compound.putDouble("z", 0);
+            this.dataTracker.set(ROTATION, compound);
         }
 
     }
 
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {
-        nbt.putString("structure_id", this.structure_id);
-        NbtCompound rot = new NbtCompound();
-        rot.putDouble("x", this.rotation.x);
-        rot.putDouble("y", this.rotation.y);
-        rot.putDouble("z", this.rotation.z);
+        nbt.putString("structure_id", this.dataTracker.get(STRUCTURE_ID));
+        nbt.put("rotation", this.dataTracker.get(ROTATION));
     }
 
     static {

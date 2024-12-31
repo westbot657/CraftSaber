@@ -175,7 +175,9 @@ public class Util {
                 for (int z = min.getZ(); z <= max.getZ(); z++) {
                     BlockState state = world.getBlockState(new BlockPos(x, y, z));
 
-                    data.add(new Pair<>(new Vec3d(x - min.getX(), y - min.getY(), z - min.getZ()), state));
+                    if (!state.isAir()) {
+                        data.add(new Pair<>(new Vec3d(x - min.getX(), y - min.getY(), z - min.getZ()), state));
+                    }
                 }
             }
         }

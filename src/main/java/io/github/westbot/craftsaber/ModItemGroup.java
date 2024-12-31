@@ -30,6 +30,17 @@ public class ModItemGroup {
             group.add(ModBlocks.BLACK_MIRROR_SLAB_BLOCK);
             group.add(ModBlocks.BLACK_MIRROR_PANEL_BLOCK);
             group.add(ModBlocks.BLACK_MIRROR_PILLAR_BLOCK);
+
+            group.add(ModBlocks.BLACK_GLASS_BLOCK);
+            group.add(ModBlocks.BLACK_GLASS_SLAB_BLOCK);
+            group.add(ModBlocks.BLACK_GLASS_PANEL_BLOCK);
+            group.add(ModBlocks.BLACK_GLASS_PILLAR_BLOCK);
+
+            group.add(ModBlocks.FILLED_LIGHT_TILE_BLOCK);
+            group.add(ModBlocks.EDGE_LIGHT_TILE_BLOCK);
+            group.add(ModBlocks.CORNER_LIGHT_TILE_BLOCK);
+            group.add(ModBlocks.COLUMN_LIGHT_TILE_BLOCK);
+            group.add(ModBlocks.END_LIGHT_TILE_BLOCK);
         });
 
     }

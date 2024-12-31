@@ -16,4 +16,16 @@ public class LightPixelData {
         }
     }
 
+    public ArrayList<PixelRange> getPixelRanges() {
+        return this.pixel_ranges;
+    }
+
+    public void setPixelRanges(ArrayList<PixelRange> ranges) {
+        this.pixel_ranges = ranges;
+    }
+
+    public void addPixelRange(PixelRange range) {
+        this.pixel_ranges.add(range);
+    }
+
 }

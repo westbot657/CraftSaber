@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "face=up": {
+      "model": "craftsaber:block/black_mirror_slab",
+      "x": 180
+    },
+    "face=down": {
+      "model": "craftsaber:block/black_mirror_slab"
+    },
+    "face=north": {
+      "model": "craftsaber:block/black_mirror_slab",
+      "x": -90
+    },
+    "face=south": {
+      "model": "craftsaber:block/black_mirror_slab",
+      "x": 90
+    },
+    "face=east": {
+      "model": "craftsaber:block/black_mirror_slab",
+      "x": -90, "y": 90
+    },
+    "face=west": {
+      "model": "craftsaber:block/black_mirror_slab",
+      "x": 90, "y": 90
+    }
+  }
+}

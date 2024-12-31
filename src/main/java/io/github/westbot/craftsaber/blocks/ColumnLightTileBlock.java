@@ -1,31 +1,38 @@
 package io.github.westbot.craftsaber.blocks;
 
+import io.github.westbot.craftsaber.CraftSaber;
+import io.github.westbot.craftsaber.data.LightTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
-public class BlackGlassPanelBlock extends Block {
+public class ColumnLightTileBlock extends Block implements LightTile {
 
     private static final DirectionProperty FACE = DirectionProperty.of("face");
+    private static final DirectionProperty ROTATION = DirectionProperty.of("rotation", Direction.UP, Direction.NORTH, Direction.EAST);
 
-    public BlackGlassPanelBlock() {
-        super(Settings.create().slipperiness(0.98f).hardness(3f).resistance(5f).sounds(BlockSoundGroup.GLASS));
+    public ColumnLightTileBlock() {
+        super(Settings.create().noCollision().hardness(3f).resistance(5f).sounds(BlockSoundGroup.GLASS));
+        setDefaultState(getDefaultState().with(FACE, Direction.DOWN).with(ROTATION, Direction.NORTH));
     }
-
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
         builder.add(FACE);
+        builder.add(ROTATION);
     }
 
     @Override
@@ -34,17 +41,18 @@ public class BlackGlassPanelBlock extends Block {
     }
 
     @Override
-    protected boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
     public @Nullable BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState parent = super.getPlacementState(ctx);
         if (parent == null) return null;
         Direction face = ctx.getSide().getOpposite();
 
+        Direction rot = LightTileBlock.getPlaceOrientation(face, ctx.getHitPos());
 
-        return parent.with(FACE, face);
+        if (rot == Direction.DOWN) rot = Direction.UP;
+        if (rot == Direction.SOUTH) rot = Direction.NORTH;
+        if (rot == Direction.WEST) rot = Direction.EAST;
+
+        return parent.with(FACE, face).with(ROTATION, rot);
     }
+
 }

@@ -1,31 +1,42 @@
 package io.github.westbot.craftsaber.blocks;
 
+import io.github.westbot.craftsaber.data.LightTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class BlackGlassPanelBlock extends Block {
+public class FilledLightTileBlock extends Block implements LightTile {
+
 
     private static final DirectionProperty FACE = DirectionProperty.of("face");
+    private static final IntProperty PATTERN = IntProperty.of("pattern", 0, 2);
 
-    public BlackGlassPanelBlock() {
-        super(Settings.create().slipperiness(0.98f).hardness(3f).resistance(5f).sounds(BlockSoundGroup.GLASS));
+
+
+    public FilledLightTileBlock() {
+        super(Settings.create().noCollision().hardness(3f).resistance(5f).sounds(BlockSoundGroup.GLASS));
+        setDefaultState(getDefaultState().with(FACE, Direction.DOWN).with(PATTERN, 0));
     }
-
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
         builder.add(FACE);
+        builder.add(PATTERN);
     }
 
     @Override
@@ -34,8 +45,14 @@ public class BlackGlassPanelBlock extends Block {
     }
 
     @Override
-    protected boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
-        return true;
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        int s = state.get(PATTERN);
+        s++;
+        if (s >= 3) {
+            s = 0;
+        }
+        world.setBlockState(pos, state.with(PATTERN, s));
+        return ActionResult.SUCCESS_NO_ITEM_USED;
     }
 
     @Override
@@ -44,7 +61,7 @@ public class BlackGlassPanelBlock extends Block {
         if (parent == null) return null;
         Direction face = ctx.getSide().getOpposite();
 
-
         return parent.with(FACE, face);
     }
+
 }

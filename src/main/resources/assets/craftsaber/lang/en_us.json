@@ -1,10 +1,20 @@
 {
 
-
   "itemGroup.craftsaber.group": "Craft Saber",
 
   "block.craftsaber.black_mirror_block": "Black Mirror Block",
-  "block.craftsaber.black_mirror_slab": "Black Mirror Block",
-  "block.craftsaber.black_mirror_panel": "Black Mirror Block",
-  "block.craftsaber.black_mirror_pillar": "Black Mirror Block"
+  "block.craftsaber.black_mirror_slab": "Black Mirror Slab",
+  "block.craftsaber.black_mirror_panel": "Black Mirror Panel",
+  "block.craftsaber.black_mirror_pillar": "Black Mirror Pillar",
+
+  "block.craftsaber.black_glass_block": "Black Glass Block",
+  "block.craftsaber.black_glass_slab": "Black Glass Slab",
+  "block.craftsaber.black_glass_panel": "Black Glass Panel",
+  "block.craftsaber.black_glass_pillar": "Black Glass Pillar",
+
+  "block.craftsaber.filled_light_tile": "Full Light Tile",
+  "block.craftsaber.edge_light_tile": "Edge Light Tile",
+  "block.craftsaber.corner_light_tile": "Corner Light Tile",
+  "block.craftsaber.column_light_tile": "Column Light Tile",
+  "block.craftsaber.end_light_tile": "End Light Tile"
 }

@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
 import org.slf4j.Logger;
@@ -33,6 +34,9 @@ public class CraftSaber implements ModInitializer {
     public static final String MOD_ID = "craftsaber";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+    // Need to put this link somewhere unobtrusive, like a credits page somewhere in settings or as an item.
+    public static final String KO_FI = "https://ko-fi.com/westbot";
+
     public static HashMap<String, Pair<Vec3d, List<Pair<Vec3d, BlockState>>>> structure_cache;
     public static HashMap<String, LightController> lightShows;
 
@@ -40,19 +44,21 @@ public class CraftSaber implements ModInitializer {
     @Override
     public void onInitialize() {
 
+        LOGGER.info("Initializing CraftSaber");
         structure_cache = new HashMap<>();
         lightShows = new HashMap<>();
 
         ModItems.init();
         ModBlocks.init();
         ModEntities.init();
+        ModItemGroup.init();
 
         ServerNetworking.init();
 
         DebugCommands.init();
 
 
-        ServerLifecycleEvents.SERVER_STARTED.register(minecraftServer -> {
+        ServerLifecycleEvents.SERVER_STARTING.register(minecraftServer -> {
             LOGGER.info("Loading Light Display structures");
             load_structures(minecraftServer);
         });
@@ -60,6 +66,10 @@ public class CraftSaber implements ModInitializer {
         ServerLifecycleEvents.SERVER_STOPPING.register(CraftSaber::save_structures);
 
         ServerPlayConnectionEvents.JOIN.register((serverPlayNetworkHandler, packetSender, minecraftServer) -> {
+            LOGGER.info("Syncing Light displays with player...");
+            if (structure_cache.isEmpty()) {
+                load_structures(minecraftServer);
+            }
             structure_cache.forEach((k, v) -> {
                 packetSender.sendPacket(new StructureSyncPayload(Util.serialize_structure(k, v)));
             });
@@ -79,13 +89,15 @@ public class CraftSaber implements ModInitializer {
             try {
                 String nbt = Files.readString(server.getPath("./craftsaber/structure_data.txt"));
                 NbtHelper.fromNbtProviderString(nbt);
-            } catch (IOException | CommandSyntaxException ignored) {
+            } catch (IOException | CommandSyntaxException e) {
+                LOGGER.error("Error loading light displays: ", e);
+
             }
         } else {
             try {
                 boolean ignored = structure_file.createNewFile();
             } catch (IOException e) {
-                LOGGER.error("Error Creating light structure file.");
+                LOGGER.error("Error Creating light structure file.", e);
             }
         }
 
@@ -119,17 +131,19 @@ public class CraftSaber implements ModInitializer {
         if (structure_file.exists()) {
             try {
                 Files.writeString(server.getPath("./craftsaber/structure_data.txt"), NbtHelper.toNbtProviderString(data));
-            } catch (IOException ignored) {
+            } catch (IOException e) {
+                LOGGER.error("Error saving light structure file.", e);
             }
         } else {
             try {
                 boolean ignored = structure_file.createNewFile();
                 try {
                     Files.writeString(server.getPath("./craftsaber/structure_data.txt"), NbtHelper.toNbtProviderString(data));
-                } catch (IOException ignored2) {
+                } catch (IOException e) {
+                    LOGGER.error("Error saving light structure file.", e);
                 }
             } catch (IOException e) {
-                LOGGER.error("Error Saving light structure file.");
+                LOGGER.error("Error saving light structure file.", e);
             }
         }
 

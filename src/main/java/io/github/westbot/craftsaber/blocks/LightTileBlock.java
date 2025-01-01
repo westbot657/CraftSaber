@@ -1,24 +1,14 @@
 package io.github.westbot.craftsaber.blocks;
 
-import io.github.westbot.craftsaber.CraftSaber;
 import io.github.westbot.craftsaber.data.LightTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.util.Pair;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
-
-// has a 16x16 grid for selecting tiles that are either: Off, Color1, or Color2   so... 3^256 possibilities... aka too many
-
-// pre-defined light types:
-// edges 2^4 = 16
-// full
-// half  7 (side halves, half but centered)
 
 public class LightTileBlock extends Block implements LightTile {
 
@@ -64,13 +54,89 @@ public class LightTileBlock extends Block implements LightTile {
         }
     }
 
+    public static Direction getCornerOrientation(Direction face, Vec3d hit_pos) {
+        double dx = (hit_pos.x % 1.0) - (0.5 * (hit_pos.x/Math.abs(hit_pos.x)));
+        double dy = (hit_pos.y % 1.0) - (0.5 * (hit_pos.y/Math.abs(hit_pos.y)));
+        double dz = (hit_pos.z % 1.0) - (0.5 * (hit_pos.z/Math.abs(hit_pos.z)));
+
+        Direction rotation;
+
+        switch (face) {
+            case NORTH:
+            case SOUTH:
+                if (dx >= 0) {
+                    if (dy >= 0) {
+                        rotation = Direction.EAST;
+                    } else {
+                        rotation = Direction.DOWN;
+                    }
+                } else {
+                    if (dy >= 0) {
+                        rotation = Direction.UP;
+                    } else {
+                        rotation = Direction.WEST;
+                    }
+                }
+
+                if (face == Direction.SOUTH) {
+                    rotation = rotation.rotateCounterclockwise(Direction.Axis.Z);
+                }
+
+                break;
+            case EAST:
+            case WEST:
+
+                if (dz >= 0) {
+                    if (dy >= 0) {
+                        rotation = Direction.UP;
+                    } else {
+                        rotation = Direction.SOUTH;
+                    }
+                } else {
+                    if (dy >= 0) {
+                        rotation = Direction.NORTH;
+                    } else {
+                        rotation = Direction.DOWN;
+                    }
+                }
+
+                if (face == Direction.EAST) {
+                    rotation = rotation.rotateCounterclockwise(Direction.Axis.X);
+                }
+
+                break;
+            case UP:
+            case DOWN:
+            default:
+                if (dx >= 0) {
+                    if (dz >= 0) {
+                        rotation = Direction.SOUTH;
+                    } else {
+                        rotation = Direction.EAST;
+                    }
+                } else {
+                    if (dz >= 0) {
+                        rotation = Direction.WEST;
+                    } else {
+                        rotation = Direction.NORTH;
+                    }
+                }
+
+                if (face == Direction.UP) {
+                    rotation = rotation.rotateCounterclockwise(Direction.Axis.Y);
+                }
+
+                break;
+        }
+
+        return rotation;
+    }
+
     public static Direction getPlaceOrientation(Direction face, Vec3d hit_pos) {
 
         double dx = (hit_pos.x % 1.0) - (0.5 * (hit_pos.x/Math.abs(hit_pos.x)));
         double dy = (hit_pos.y % 1.0) - (0.5 * (hit_pos.y/Math.abs(hit_pos.y)));
         double dz = (hit_pos.z % 1.0) - (0.5 * (hit_pos.z/Math.abs(hit_pos.z)));
-
-        CraftSaber.LOGGER.info("xyz: {}, {}, {}", dx, dy, dz);
 
         Direction rotation;
 
@@ -91,8 +157,8 @@ public class LightTileBlock extends Block implements LightTile {
                     }
                 }
                 break;
-            case WEST:
             case EAST:
+            case WEST:
                 if (Math.abs(dz) >= Math.abs(dy)) {
                     if (dz >= 0) {
                         rotation = Direction.SOUTH;
@@ -108,8 +174,8 @@ public class LightTileBlock extends Block implements LightTile {
                 }
 
                 break;
-            case DOWN:
             case UP:
+            case DOWN:
             default:
                 if (Math.abs(dx) >= Math.abs(dz)) {
                     if (dx >= 0) {

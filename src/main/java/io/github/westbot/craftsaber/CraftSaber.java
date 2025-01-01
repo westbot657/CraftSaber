@@ -84,23 +84,22 @@ public class CraftSaber implements ModInitializer {
         }
         NbtCompound data = new NbtCompound();
 
-        File structure_file = server.getPath("./craftsaber/structure_data.txt").toFile();
-        if (structure_file.exists()) {
+
+        if (Files.exists(server.getPath("./craftsaber/structure_data.txt"))) {
             try {
                 String nbt = Files.readString(server.getPath("./craftsaber/structure_data.txt"));
-                NbtHelper.fromNbtProviderString(nbt);
+                data = NbtHelper.fromNbtProviderString(nbt);
             } catch (IOException | CommandSyntaxException e) {
                 LOGGER.error("Error loading light displays: ", e);
-
             }
         } else {
             try {
-                boolean ignored = structure_file.createNewFile();
+                boolean ignored = server.getPath("./craftsaber/structure_data.txt").toFile().createNewFile();
+
             } catch (IOException e) {
                 LOGGER.error("Error Creating light structure file.", e);
             }
         }
-
 
         for (String k : data.getKeys()) {
             NbtElement v = data.get(k);

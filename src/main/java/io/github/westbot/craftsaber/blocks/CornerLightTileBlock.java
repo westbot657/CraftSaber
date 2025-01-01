@@ -42,7 +42,7 @@ public class CornerLightTileBlock extends Block implements LightTile {
         if (parent == null) return null;
         Direction face = ctx.getSide().getOpposite();
 
-        Direction rot = LightTileBlock.getPlaceOrientation(face, ctx.getHitPos());
+        Direction rot = LightTileBlock.getCornerOrientation(face, ctx.getHitPos());
 
         return parent.with(FACE, face).with(ROTATION, rot);
     }

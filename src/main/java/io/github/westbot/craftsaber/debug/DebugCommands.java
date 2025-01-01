@@ -43,27 +43,26 @@ public class DebugCommands {
 
         ServerWorld world = context.getSource().getWorld();
 
-        if (world.isClient) return 1;
+        if (!world.isClient) {
+            BlockPos pos1 = BlockPosArgumentType.getBlockPos(context, "pos1");
+            BlockPos pos2 = BlockPosArgumentType.getBlockPos(context, "pos2");
+            Vec3d offset = Vec3ArgumentType.getVec3(context, "offset");
+            String id = context.getArgument("structure_id", String.class);
 
-        BlockPos pos1 = BlockPosArgumentType.getBlockPos(context, "pos1");
-        BlockPos pos2 = BlockPosArgumentType.getBlockPos(context, "pos2");
-        Vec3d offset = Vec3ArgumentType.getVec3(context, "offset");
-        String id = context.getArgument("structure_id", String.class);
+            Pair<Vec3d, List<Pair<Vec3d, BlockState>>> block_data = Util.collect_blocks(pos1, pos2, offset, world);
+            CraftSaber.structure_cache.put(id, block_data);
+            CraftSaber.save_structures(context.getSource().getServer());
 
-        Pair<Vec3d, List<Pair<Vec3d, BlockState>>> block_data = Util.collect_blocks(pos1, pos2, offset, world);
-        CraftSaber.structure_cache.put(id, block_data);
+            Vec3d pos = context.getSource().getPosition();
 
-        Vec3d pos = context.getSource().getPosition();
+            LightDisplayEntity entity = new LightDisplayEntity(ModEntities.LIGHT_DISPLAY, world);
+            entity.setPosition(pos);
+            entity.setStructureId(id);
+            world.spawnEntity(entity);
 
-        LightDisplayEntity entity = new LightDisplayEntity(ModEntities.LIGHT_DISPLAY, world);
-        entity.setPosition(pos);
-        entity.setStructureId(id);
-        world.spawnEntity(entity);
-
-
-
-        for (ServerPlayerEntity player : world.getPlayers()) {
-            ServerPlayNetworking.send(player, new StructureSyncPayload(Util.serialize_structure(id, block_data)));
+            for (ServerPlayerEntity player : world.getPlayers()) {
+                ServerPlayNetworking.send(player, new StructureSyncPayload(Util.serialize_structure(id, block_data)));
+            }
         }
 
         return 1;
@@ -84,6 +83,15 @@ public class DebugCommands {
         } catch (CommandSyntaxException e) {
             context.getSource().sendError(Text.literal(e.getMessage()));
         }
+
+        return 1;
+    }
+
+    public static int printCache(CommandContext<ServerCommandSource> context) {
+        context.getSource().sendFeedback(() ->
+            Text.literal("Cache: " + CraftSaber.structure_cache.toString()),
+            false
+        );
 
         return 1;
     }
@@ -117,6 +125,11 @@ public class DebugCommands {
                                             .executes(DebugCommands::rotateLightDisplays)
                                     )
                                 )
+                            )
+                        ).then(
+                            CommandManager.literal("cache").then(
+                                CommandManager.literal("structures")
+                                    .executes(DebugCommands::printCache)
                             )
                         )
                     )

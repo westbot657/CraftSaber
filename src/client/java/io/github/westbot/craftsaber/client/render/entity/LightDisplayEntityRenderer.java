@@ -1,4 +1,4 @@
-package io.github.westbot.craftsaber.client.render;
+package io.github.westbot.craftsaber.client.render.entity;
 
 import io.github.westbot.craftsaber.data.LightTile;
 import io.github.westbot.craftsaber.client.CraftSaberClient;
@@ -6,7 +6,7 @@ import io.github.westbot.craftsaber.entities.LightDisplayEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Frustum;
-import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -15,8 +15,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockRenderView;
 
 import java.util.List;
 
@@ -67,7 +69,11 @@ public class LightDisplayEntityRenderer extends EntityRenderer<LightDisplayEntit
 
             // entity alignment
             matrices.translate(-center_offset.x - 0.5, -center_offset.y - 0.5, -center_offset.z - 0.5);
-            renderer.renderBlockAsEntity(state, matrices, vertexConsumers, 0xFFFFFF, OverlayTexture.DEFAULT_UV);
+
+            BlockPos renderOrigin = entity.getBlockPos();
+            BlockRenderView world = entity.getWorld();
+
+            renderer.renderBlock(state, renderOrigin, world, matrices, vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), false, entity.getRandom());
 
             matrices.pop();
         }

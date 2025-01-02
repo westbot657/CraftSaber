@@ -1,7 +1,7 @@
 package io.github.westbot.craftsaber;
 
 import io.github.westbot.craftsaber.entities.LightDisplayEntity;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import io.github.westbot.craftsaber.entities.NoteEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
@@ -13,6 +13,12 @@ public class ModEntities {
         Registries.ENTITY_TYPE, Identifier.of(CraftSaber.MOD_ID, "light_display"),
         EntityType.Builder.create(LightDisplayEntity::new, SpawnGroup.MISC)
             .dimensions(0.1f, 0.1f).build()
+    );
+
+    public static final EntityType<NoteEntity> NOTE_ENTITY = Registry.register(
+        Registries.ENTITY_TYPE, Identifier.of(CraftSaber.MOD_ID, "note_entity"),
+        EntityType.Builder.create(NoteEntity::new, SpawnGroup.MISC)
+            .dimensions(12/16f, 12/16f).build()
     );
 
     public static void init() {

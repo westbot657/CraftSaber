@@ -2,6 +2,11 @@
 
   "itemGroup.craftsaber.group": "Craft Saber",
 
+  "item.craftsaber.saber": "Saber",
+
+  "entity.craftsaber.light_display": "Light Display",
+  "entity.craftsaber.note_entity": "Note",
+
   "block.craftsaber.black_mirror_block": "Black Mirror Block",
   "block.craftsaber.black_mirror_slab": "Black Mirror Slab",
   "block.craftsaber.black_mirror_panel": "Black Mirror Panel",
@@ -16,5 +21,6 @@
   "block.craftsaber.edge_light_tile": "Edge Light Tile",
   "block.craftsaber.corner_light_tile": "Corner Light Tile",
   "block.craftsaber.column_light_tile": "Column Light Tile",
-  "block.craftsaber.end_light_tile": "End Light Tile"
+  "block.craftsaber.end_light_tile": "End Light Tile",
+  "block.craftsaber.stripe_light_tile": "Stripe Light Tile"
 }

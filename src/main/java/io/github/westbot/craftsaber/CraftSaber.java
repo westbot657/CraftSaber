@@ -1,17 +1,19 @@
 package io.github.westbot.craftsaber;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.westbot.craftsaber.debug.DebugCommands;
+import io.github.westbot.craftsaber.commands.HexArgumentType;
+import io.github.westbot.craftsaber.commands.ModCommands;
 import io.github.westbot.craftsaber.lightsystems.LightController;
 import io.github.westbot.craftsaber.lightsystems.Util;
 import io.github.westbot.craftsaber.networking.ServerNetworking;
 import io.github.westbot.craftsaber.networking.StructureSyncPayload;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.block.BlockState;
+import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
@@ -23,8 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -48,6 +48,8 @@ public class CraftSaber implements ModInitializer {
         structure_cache = new HashMap<>();
         lightShows = new HashMap<>();
 
+        ModComponents.init();
+
         ModItems.init();
         ModBlocks.init();
         ModEntities.init();
@@ -55,7 +57,7 @@ public class CraftSaber implements ModInitializer {
 
         ServerNetworking.init();
 
-        DebugCommands.init();
+        ModCommands.init();
 
 
         ServerLifecycleEvents.SERVER_STARTING.register(minecraftServer -> {
@@ -74,6 +76,8 @@ public class CraftSaber implements ModInitializer {
                 packetSender.sendPacket(new StructureSyncPayload(Util.serialize_structure(k, v)));
             });
         });
+
+        ArgumentTypeRegistry.registerArgumentType(Identifier.of(MOD_ID, "hex_argument"), HexArgumentType.class, ConstantArgumentSerializer.of(HexArgumentType::new));
 
     }
 

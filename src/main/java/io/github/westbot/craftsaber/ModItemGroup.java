@@ -26,6 +26,7 @@ public class ModItemGroup {
         Registry.register(Registries.ITEM_GROUP, GROUP_KEY, GROUP);
 
         ItemGroupEvents.modifyEntriesEvent(GROUP_KEY).register(group -> {
+            group.add(ModItems.SABER);
             group.add(ModBlocks.BLACK_MIRROR_BLOCK);
             group.add(ModBlocks.BLACK_MIRROR_SLAB_BLOCK);
             group.add(ModBlocks.BLACK_MIRROR_PANEL_BLOCK);

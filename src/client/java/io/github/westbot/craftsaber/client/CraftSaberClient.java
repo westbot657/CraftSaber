@@ -2,17 +2,22 @@ package io.github.westbot.craftsaber.client;
 
 import io.github.westbot.craftsaber.ModBlocks;
 import io.github.westbot.craftsaber.ModEntities;
+import io.github.westbot.craftsaber.ModItems;
 import io.github.westbot.craftsaber.client.networking.ClientNetworking;
-import io.github.westbot.craftsaber.client.render.LightDisplayEntityRenderer;
+import io.github.westbot.craftsaber.client.render.entity.LightDisplayEntityRenderer;
+import io.github.westbot.craftsaber.client.render.entity.NoteEntityRenderer;
+import io.github.westbot.craftsaber.client.render.item.SaberRenderer;
 import io.github.westbot.craftsaber.lightsystems.Util;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +31,19 @@ public class CraftSaberClient implements ClientModInitializer {
         structure_cache = new HashMap<>();
 
         EntityRendererRegistry.register(ModEntities.LIGHT_DISPLAY, LightDisplayEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.NOTE_ENTITY, NoteEntityRenderer::new);
+
+        ModItems.SABER.mutableRenderer.setValue(new GeoRenderProvider() {
+            private SaberRenderer renderer;
+
+            @Override
+            public BuiltinModelItemRenderer getGeoItemRenderer() {
+                if (renderer == null) {
+                    renderer = new SaberRenderer();
+                }
+                return renderer;
+            }
+        });
 
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
             ModBlocks.COLUMN_LIGHT_TILE_BLOCK,
@@ -44,7 +62,11 @@ public class CraftSaberClient implements ClientModInitializer {
 
         ClientNetworking.init();
 
+
+
     }
+
+
 
     // Inverse function is found in the Util class
     public static void cache(NbtCompound data) {

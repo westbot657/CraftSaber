@@ -4,6 +4,7 @@
   "package": "io.github.westbot.craftsaber.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ItemStackMixin"
   ],
   "injectors": {
     "defaultRequire": 1

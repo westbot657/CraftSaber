@@ -3,8 +3,6 @@ package io.github.westbot.craftsaber.client.render.item;
 import io.github.westbot.craftsaber.CraftSaber;
 import io.github.westbot.craftsaber.items.Saber;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.TexturedRenderLayers;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;

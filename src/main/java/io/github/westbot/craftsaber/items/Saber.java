@@ -2,6 +2,8 @@ package io.github.westbot.craftsaber.items;
 
 import io.github.westbot.craftsaber.ModComponents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.ToolMaterials;
 import org.apache.commons.lang3.mutable.MutableObject;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -20,7 +22,6 @@ public class Saber extends Item implements GeoItem {
 
     public Saber() {
         super(new Settings().component(ModComponents.SABER_COLOR, 0xFFFFFF).maxCount(1));
-
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 

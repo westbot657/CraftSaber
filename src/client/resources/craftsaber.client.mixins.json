@@ -1,9 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "io.github.westbot.craftsaber.mixin.client",
+  "package": "io.github.westbot.craftsaber.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "ItemEntityRendererMixin",
+    "PlayerEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

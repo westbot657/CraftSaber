@@ -54,6 +54,10 @@ public class Stash<T> implements Iterable<T> {
         return data.getFirst() == null;
     }
 
+    public int getSize() {
+        return this.max_size;
+    }
+
     public Stash(int capacity) {
         max_size = capacity;
         for (int i=0; i<=capacity; i++) {

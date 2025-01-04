@@ -18,7 +18,7 @@ public class ModEntities {
     public static final EntityType<NoteEntity> NOTE_ENTITY = Registry.register(
         Registries.ENTITY_TYPE, Identifier.of(CraftSaber.MOD_ID, "note_entity"),
         EntityType.Builder.create(NoteEntity::new, SpawnGroup.MISC)
-            .dimensions(12/16f, 12/16f).build()
+            .dimensions(0.5f, 0.5f).build()
     );
 
     public static void init() {

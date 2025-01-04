@@ -30,6 +30,21 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 
+/*
+The NOTES section:
+
+1.8m = default player height; clamped between 1.6 and 2.4
+blocks are 0.5m³
+
+rows at: 0.85, 1.4, 1.9
+columns: -0.9, -0.3, 0.3, 0.9
+
+note_y_pos = rowY + ((player_height-1.8)/2)
+
+
+ */
+
+
 public class CraftSaber implements ModInitializer {
     public static final String MOD_ID = "craftsaber";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);

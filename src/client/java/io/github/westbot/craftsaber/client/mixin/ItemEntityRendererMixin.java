@@ -82,7 +82,7 @@ public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity>
             Stash<Pair<Vector3f, Vector3f>> stash = ((ItemStackWithStash) ((Object) stack)).craftSaber$getStash();
             var col = stack.getOrDefault(ModComponents.SABER_COLOR, 0);
 
-            SaberTrailRenderer.render(blade_base, blade_tip, stash, col);
+            SaberTrailRenderer.queueRender(blade_base, blade_tip, stash, col);
         }
 
     }

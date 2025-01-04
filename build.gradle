@@ -34,6 +34,20 @@ repositories {
             includeGroup("software.bernie.geckolib")
         }
     }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+
+
 }
 
 dependencies {
@@ -43,6 +57,14 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    modImplementation "maven.modrinth:vivecraft:1.21.1-1.1.14-b2-fabric"
+
+    include(implementation("org.lwjgl:lwjgl-openvr:3.3.2"))
+    include(implementation("org.lwjgl:lwjgl-openvr:3.3.2:natives-linux"))
+    include(implementation("org.lwjgl:lwjgl-openvr:3.3.2:natives-macos"))
+    include(implementation("org.lwjgl:lwjgl-openvr:3.3.2:natives-windows"))
+
 }
 
 processResources {

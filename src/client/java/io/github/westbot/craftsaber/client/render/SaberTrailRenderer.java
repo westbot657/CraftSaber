@@ -9,7 +9,25 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
+
 public class SaberTrailRenderer {
+
+    private static ArrayList<Runnable> calls = new ArrayList<>();
+
+    public static void queueRender(Vector3f blade_base, Vector3f blade_tip, Stash<Pair<Vector3f, Vector3f>> stash, int col) {
+        Runnable runner = () -> {
+            SaberTrailRenderer.render(blade_base, blade_tip, stash, col);
+        };
+        calls.add(runner);
+    }
+
+    public static void renderAll() {
+        for (Runnable runnable : calls) {
+            runnable.run();
+        }
+        calls.clear();
+    }
 
     public static void render(Vector3f blade_base, Vector3f blade_tip, Stash<Pair<Vector3f, Vector3f>> stash, int col) {
 

@@ -54,6 +54,12 @@ public class NoteEntityRenderer extends DynamicGeoEntityRenderer<NoteEntity> {
 
     @Override
     public void render(NoteEntity entity, float entityYaw, float partialTick, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
+
+        poseStack.push();
+
+        poseStack.scale(0.666666666f, 0.666666666f, 0.666666666f);
+
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, 0xF00000);
+        poseStack.pop();
     }
 }

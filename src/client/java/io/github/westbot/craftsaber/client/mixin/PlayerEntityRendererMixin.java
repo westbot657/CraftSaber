@@ -20,7 +20,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
     @Inject(method = "<init>", at = @At("TAIL"))
     public void init(EntityRendererFactory.Context ctx, boolean slim, CallbackInfo ci) {
-        this.addFeature(new SaberFeatureRenderer<>(this, ctx.getHeldItemRenderer()));
+        this.addFeature(new SaberFeatureRenderer<>(this, ctx.getItemRenderer()));
     }
 
 

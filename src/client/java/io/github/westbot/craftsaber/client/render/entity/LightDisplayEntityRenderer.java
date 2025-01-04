@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockRenderView;
+import org.joml.Quaternionf;
 
 import java.util.List;
 
@@ -62,10 +63,8 @@ public class LightDisplayEntityRenderer extends EntityRenderer<LightDisplayEntit
             // structure relative translations
             matrices.translate(offset.x, offset.y, offset.z);
 
-            // structure rotations
-            matrices.multiply(RotationAxis.POSITIVE_X.rotation((float) rotation.x));
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotation((float) rotation.y));
-            matrices.multiply(RotationAxis.POSITIVE_Z.rotation((float) rotation.z));
+            // structure rotation
+            matrices.multiply((new Quaternionf()).rotationXYZ((float) rotation.x, (float) rotation.y, (float) rotation.z));
 
             // entity alignment
             matrices.translate(-center_offset.x - 0.5, -center_offset.y - 0.5, -center_offset.z - 0.5);

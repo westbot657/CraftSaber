@@ -155,13 +155,23 @@ public class SaberFeatureRenderer<T extends PlayerEntity, M extends EntityModel<
 
         } else {
 
-            if (stack1.isOf(ModItems.SABER)) { // right hand
+            // 0. copy translations from LivingEntityRenderer // may be unnecessary, this section seems to just be getting the matrices to the player position and accounting for scale/rotation
+            // from Line 63-141
+            // anyways that's the result we end up with here, as `matrices`.
 
+
+
+
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90.0F));
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180.0F));
+
+            if (stack1.isOf(ModItems.SABER)) { // right hand
 
 
             }
 
             if (stack2.isOf(ModItems.SABER)) { // left hand
+
 
             }
         }

@@ -6,6 +6,7 @@
   "client": [
     "ItemEntityRendererMixin",
     "PlayerEntityRendererMixin",
+    "PlayerHeldItemFeatureRendererMixin",
     "WorldRendererMixin"
   ],
   "injectors": {
